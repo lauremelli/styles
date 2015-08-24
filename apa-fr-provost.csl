@@ -294,7 +294,13 @@
         <text value="Manuscrit soumis pour publication"/>
       </if>
       <else-if type="book chapter thesis" match="any">
-        <text variable="note" prefix="(" suffix=")"/>
+         <choose>
+          <if variable="original-date">
+          </if>
+          <else>
+            <text variable="note" prefix="(" suffix=")"/>
+          </else>
+	</choose>
       </else-if>
     </choose>
   </macro>
@@ -349,6 +355,9 @@
   <macro name="issued-year">
     <choose>
       <if variable="issued">
+        <group delimiter="/">
+          <date variable="original-date" form="text"/>
+        <group>
         <date variable="issued">
           <date-part name="year"/>
         </date>
@@ -512,6 +521,15 @@
       </else>
     </choose>
   </macro>
+  <macro name="original-date">
+    <choose>
+      <if variable="original-date">
+        <group prefix="(" suffix=")" delimiter=" ">e
+          <text value="Ouvrage original publié en "/><date variable="original-date" form="text"/>
+        </group>
+      </if>
+    </choose>
+  </macro>
   <citation et-al-min="6" et-al-use-first="1" et-al-subsequent-min="3" et-al-subsequent-use-first="1" disambiguate-add-year-suffix="true" disambiguate-add-names="true" disambiguate-add-givenname="true" collapse="year" givenname-disambiguation-rule="primary-name">
     <sort>
       <key macro="author"/>
@@ -547,6 +565,7 @@
         </group>
       </group>
       <text macro="extra" prefix=" " suffix="."/>
+      <text macro="original-date" prefix=" " suffix="."/>
       <text macro="access" prefix=" "/>
     </layout>
   </bibliography>
